@@ -255,7 +255,7 @@ namespace Dagboksappen
                 Console.WriteLine("Inga anteckningar att ta bort");
                 return;
             }
-            Console.Write("Ange dattum för anteckningen att ta bort (YYYY-MM-DD): ");
+            Console.Write("Ange dattum för anteckningen att ta bort (YYYY-MM-DD):  ");
             if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
             {
                 Console.WriteLine("Ogiltig datumformat");
