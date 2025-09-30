@@ -34,10 +34,10 @@ namespace Dagboksappen
                         SearchEntry();
                         break;
                 case "4":
-                        SaveToFileStub();
+                        SaveToFile();
                         break;
                 case "5":
-                        LoadFromFileStub();
+                        LoadFromFile();
                         break;
                 case "6":
                         UpdateEntryStub();
@@ -182,14 +182,24 @@ namespace Dagboksappen
             }
         }
 
-        static void SaveToFileStub()
+        static void SaveToFile()
         {
-            Console.WriteLine("Spara till fil");
+            if (!entries.Any()) 
+            {
+                Console.WriteLine("Inga anteckningar att spara");
+            }
+            diaryService.SaveEntries(entries);
         }
 
-        static void LoadFromFileStub()
+        static void LoadFromFile()
         {
-            Console.WriteLine("Läs från fil");
+            entries = diaryService.LoadEntries();
+
+            entriesDict.Clear();
+            foreach (var entry in entries)
+            {
+                entriesDict[entry.Date] = entry;
+            }   
         }
 
         static void UpdateEntryStub()
