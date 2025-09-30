@@ -249,6 +249,43 @@ namespace Dagboksappen
         static void DeleteEntry()
         {
             Console.WriteLine("Ta bort anteckning");
+
+            if (!entries.Any()) 
+            {
+                Console.WriteLine("Inga anteckningar att ta bort");
+                return;
+            }
+            Console.Write("Ange dattum för anteckningen att ta bort (YYYY-MM-DD): ");
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime date))
+            {
+                Console.WriteLine("Ogiltig datumformat");
+                return;
+            }
+            date = date.Date;
+            if (entriesDict.TryGetValue(date, out DiaryEntry? éntryToRemove)) 
+            {
+            Console.WriteLine("Anteckning som kommer att tas bort: ");
+            Console.WriteLine($"Datum {éntryToRemove.Date:yyyy-MM-dd}: ");
+            Console.WriteLine($"Text: {éntryToRemove.Text}");
+            Console.WriteLine("Är du säker på att du vill ta bort denna anteckning (j/n): ");
+
+            string confirmation = Console.ReadLine();
+            if (confirmation.ToLower() == "j" || confirmation.ToLower() == "ja")  
+            {
+                    entries.Remove(éntryToRemove);
+                    entriesDict.Remove(date);
+                    Console.WriteLine("Anteckning borttagen!");
+            }
+            else
+            {
+                    Console.WriteLine("Borttagen avbruten");
+            }
+            }
+            else 
+            {
+                Console.WriteLine("Ingen anteckning hittades för det datumet");
+                Console.WriteLine("Använd 'Lista alla anteckningar' för att se tillgängliga datum");
+            }
         }
          
     }
