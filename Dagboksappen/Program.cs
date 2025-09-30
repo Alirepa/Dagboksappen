@@ -1,11 +1,16 @@
 ﻿
+using System.ComponentModel;
+
 namespace Dagboksappen
 {
     internal class Program
     {
 
         private static List<DiaryEntry> entries = new List<DiaryEntry>();
-        private static DiaryService diaryService= new DiaryService();
+        private static Dictionary<DateTime,DiaryEntry> entriesDict = new Dictionary<DateTime, DiaryEntry>();
+        private static DiaryService diaryService = new DiaryService();
+
+
         static void Main(string[] args)
         {
             Console.WriteLine("Välkomen till DagboksAppen");
@@ -19,10 +24,10 @@ namespace Dagboksappen
                 switch (choice) 
                 {
                 case "1":
-                        AddEntryStub();
+                        AddEntry();
                         break;
                 case "2":
-                        ListEntriesStub();
+                        ListEntries();
                         break;
                 case "3":
                         SearchEntryStub();
@@ -70,39 +75,93 @@ namespace Dagboksappen
 
 
 
-         static void DeleteEntryStub()
+
+        static void AddEntry()
         {
-            Console.WriteLine("Ta bort anteckning");
+            Console.WriteLine("Lägg till anteckning");
+
+            DateTime date = GetValidDate();
+            string text = GetValidText();
+
+            var newEntry = new DiaryEntry { Date = date.Date, Text = text };
+            entries.Add(newEntry);
+            entriesDict[date.Date] = newEntry;
+
+            Console.WriteLine("Anteckning sparaad.");
         }
 
-        private static void UpdateEntryStub()
+        static DateTime GetValidDate()
         {
-            Console.WriteLine("Updatera anteckning");
+            
+            while (true)
+            {
+                Console.Write("Ange datum (YYYY-MM-DD): ");
+                string dateInput = Console.ReadLine();
+
+                if (DateTime.TryParse(dateInput, out DateTime date))
+                {
+                    return date;
+                }
+                Console.WriteLine("Ogiltigt datumformat. Försök igen.");
+            }
         }
 
-        private static void LoadFromFileStub()
+
+        static string GetValidText()
         {
-            Console.WriteLine("Läs från fil"); 
+            while (true)
+            {
+                Console.Write("Ange anteckningstext ");
+                string text = Console.ReadLine();
+                if (!string.IsNullOrWhiteSpace(text))
+                {
+                    return text;
+                }
+                Console.WriteLine("Anteckningen får inte vara tom, försök igen");
+            }
         }
 
-        private static void SaveToFileStub()
+        static void ListEntries()
         {
-            Console.WriteLine("Spara till fil");
+            Console.WriteLine("Lista anteckningar");
+
+            if (!entries.Any())
+            {
+                Console.WriteLine("Inga anteckningar hittades");
+                return;
+            }
+
+            foreach (var entry in entries.OrderBy(e => e.Date))
+            {
+                Console.WriteLine($"{entry.Date:yyyy-MM-dd}: {entry.Text}");
+            }
+            Console.WriteLine($"Totalt: {entries.Count} anteckningar");
         }
 
-        private static void SearchEntryStub()
+        static void SearchEntryStub()
         {
             Console.WriteLine("Sök anteckning");
         }
 
-        private static void ListEntriesStub()
+        static void SaveToFileStub()
         {
-            Console.WriteLine("Lista anteckningar");
+            Console.WriteLine("Spara till fil");
         }
 
-        private static void AddEntryStub()
+        static void LoadFromFileStub()
         {
-            Console.WriteLine("LÄgg till anteckning");
+            Console.WriteLine("Läs från fil");
         }
+
+        static void UpdateEntryStub()
+        {
+            Console.WriteLine("Updatera anteckning");
+        }
+
+        static void DeleteEntryStub()
+        {
+            Console.WriteLine("Ta bort anteckning");
+        }
+         
     }
 }
