@@ -40,10 +40,10 @@ namespace Dagboksappen
                         LoadFromFile();
                         break;
                 case "6":
-                        UpdateEntryStub();
+                        UpdateEntry();
                         break;
                 case "7":
-                        DeleteEntryStub();
+                        DeleteEntry();
                         break;
                 case "8":
                         Console.WriteLine("Hej då!");
@@ -202,12 +202,51 @@ namespace Dagboksappen
             }   
         }
 
-        static void UpdateEntryStub()
+        static void UpdateEntry()
         {
             Console.WriteLine("Updatera anteckning");
+
+            if (!entries.Any()) 
+            {
+                Console.WriteLine("Inga anteckningar att uppdatera");
+                return;
+            }
+
+            Console.Write("Ange datum för anteckningen att uppdatera (YYYY-MM-DD): ");
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime date)) 
+            {
+            Console.WriteLine("Ogiltigt datumformat");
+                return;
+            }
+
+            date = date.Date;
+
+            if (entriesDict.TryGetValue(date, out DiaryEntry? existingEntry)) 
+            {
+                Console.WriteLine($"Nuvarande anteckning för {date:YYYY-MM-DD}: ");
+                Console.WriteLine($"Text: {existingEntry.Text}");
+                Console.WriteLine("Ange ny text (lämna tom för att behålla nuvarande): ");
+                string newText = Console.ReadLine();
+
+                if (!string.IsNullOrWhiteSpace(newText)) 
+                {
+                existingEntry.Text = newText;
+                Console.WriteLine("Anteckning uppdaterad.");
+                }
+                else
+                {
+                    Console.WriteLine("Ingen ändring gjordes.");
+                }
+            }
+            else 
+            {
+                Console.WriteLine("Ingen anteckning hittades för det datumet");
+                Console.WriteLine("Använd 'Lista alla anteckningar' för att se tillgängliga datum");
+            }
+
         }
 
-        static void DeleteEntryStub()
+        static void DeleteEntry()
         {
             Console.WriteLine("Ta bort anteckning");
         }
