@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Dagboksappen
 {
-    internal class DiaryService
+    public class DiaryService
     {
+        public DiaryService() { }
     }
 }

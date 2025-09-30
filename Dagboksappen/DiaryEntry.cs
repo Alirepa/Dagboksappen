@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Dagboksappen
 {
-    internal class DiaryEntry
+    public class DiaryEntry
     {
+        public DateTime Date { get; set; }
+        public string Text { get; set; } = string.Empty;
     }
 }
