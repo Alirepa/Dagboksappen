@@ -1,5 +1,6 @@
 ﻿
 using System.ComponentModel;
+using System.Security.Permissions;
 
 namespace Dagboksappen
 {
@@ -30,7 +31,7 @@ namespace Dagboksappen
                         ListEntries();
                         break;
                 case "3":
-                        SearchEntryStub();
+                        SearchEntry();
                         break;
                 case "4":
                         SaveToFileStub();
@@ -138,9 +139,47 @@ namespace Dagboksappen
             Console.WriteLine($"Totalt: {entries.Count} anteckningar");
         }
 
-        static void SearchEntryStub()
+        static void SearchEntry()
         {
             Console.WriteLine("Sök anteckning");
+
+            Console.WriteLine("Ange datum att söka efter (YYYY-MM-DD)");
+            string searchDate = Console.ReadLine();
+
+            if (DateTime.TryParse(searchDate, out DateTime searchDateTime))
+            {
+                var date = searchDateTime.Date;
+
+
+                //för vg
+                if (entriesDict.TryGetValue(date, out DiaryEntry? entry))
+                {
+                    Console.WriteLine($"Hittade anteckning för {date:yyyy-MM-dd}:");
+                    Console.WriteLine($"Text: {entry.Text}");
+                }
+                else
+                {
+
+                   var foundEntries = entries.Where(e => e.Date == date).ToList();
+                    if (foundEntries.Any())
+                    {
+                        Console.WriteLine($"Hittade {foundEntries.Count} anteckning för {date:yyyy-MM-dd}:");
+
+                        foreach (var foundEntry in foundEntries)
+                        {
+                            Console.WriteLine($"Text: {foundEntry.Text}");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Ingen anteckning hittades för {date:yyyy-MM-dd}");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("Ogiltigt datumformat. Försök igen.");
+            }
         }
 
         static void SaveToFileStub()
