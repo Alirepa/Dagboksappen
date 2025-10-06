@@ -8,7 +8,7 @@ namespace Dagboksappen
     {
 
         private static List<DiaryEntry> entries = new List<DiaryEntry>();
-        private static Dictionary<DateTime,DiaryEntry> entriesDict = new Dictionary<DateTime, DiaryEntry>();
+        private static Dictionary<DateTime,DiaryEntry> entriesDict = new Dictionary<DateTime, DiaryEntry>();     //snabb sökning på datum för vg
         private static DiaryService diaryService = new DiaryService();
 
 
@@ -81,12 +81,12 @@ namespace Dagboksappen
         {
             Console.WriteLine("Lägg till anteckning");
 
-            DateTime date = GetValidDate();
-            string text = GetValidText();
+            DateTime date = GetValidDate();    //frågar tills man skriver giltigt datum
+            string text = GetValidText();       //frågar tills txt it är tomt
 
             var newEntry = new DiaryEntry { Date = date.Date, Text = text };
-            entries.Add(newEntry);
-            entriesDict[date.Date] = newEntry;
+            entries.Add(newEntry);          //lägger till det i listan
+            entriesDict[date.Date] = newEntry;      //lägger till den i lexikonet
 
             Console.WriteLine("Anteckning sparaad.");
         }
@@ -94,7 +94,7 @@ namespace Dagboksappen
         static DateTime GetValidDate()
         {
             
-            while (true)
+            while (true)   //tvingar användaren att ge rätt datum
             {
                 Console.Write("Ange datum (YYYY-MM-DD): ");
                 string dateInput = Console.ReadLine();
@@ -132,7 +132,7 @@ namespace Dagboksappen
                 return;
             }
 
-            foreach (var entry in entries.OrderBy(e => e.Date))
+            foreach (var entry in entries.OrderBy(e => e.Date))  //sorterar anteckningar efter datm
             {
                 Console.WriteLine($"{entry.Date:yyyy-MM-dd}: {entry.Text}");
             }
@@ -151,7 +151,7 @@ namespace Dagboksappen
                 var date = searchDateTime.Date;
 
 
-                //för vg
+                //dictionary för vg
                 if (entriesDict.TryGetValue(date, out DiaryEntry? entry))
                 {
                     Console.WriteLine($"Hittade anteckning för {date:yyyy-MM-dd}:");
